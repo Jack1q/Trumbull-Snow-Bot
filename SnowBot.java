@@ -15,7 +15,7 @@ import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.conf.ConfigurationBuilder;
 
-/*
+/**
  * This program was created so that SJ & Trumbull students will no longer 
  * have to constantly refresh the Snow Day Calculator to see the odds of
  * cancellation. Now, if the percentage is sizable (>50), this bot will

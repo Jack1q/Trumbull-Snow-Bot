@@ -52,10 +52,10 @@ public class SnowBot
           try
           {
             final Document document = Jsoup.connect(url).get();
-            for (final Element row : document.select("ul.bargraph")) // fix
+            for (final Element row : document.select("ul.bargraph"))
             {
 
-              // if it stops working, change these numbers
+              // if it stops working, go back into site html and change values
               tomDateRaw =
                 row.select(".row:nth-of-type(2) .col-sm-3:nth-of-type(1)")
                   .text();

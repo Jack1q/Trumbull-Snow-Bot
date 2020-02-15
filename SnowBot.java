@@ -28,12 +28,8 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class SnowBot
 {
-  public static void main(final String[] args)
+  public static void main(String[] args)
   {
-
-    // This is so it posts every 8 hours. Additionally, Twitter does not accept
-    // duplicate bot posts. Which means if there is no change in the percentage,
-    // it will not post again unless it changes after the next 8hr interval
 
     final long timeInterval = 28000000; // 2.8e7 milliseconds = ~8 hours
 
@@ -45,7 +41,6 @@ public class SnowBot
 
         while (true)
         {
-          // just change zip code, works anywhere
           String url = "https://www.swdycalc.com/06611";
           String tomDateRaw = ""; // raw date info
           String tomStatsRaw = ""; // raw % and inches info
@@ -54,8 +49,6 @@ public class SnowBot
             final Document document = Jsoup.connect(url).get();
             for (final Element row : document.select("ul.bargraph"))
             {
-
-              // if it stops working, go back into site html and change values
               tomDateRaw =
                 row.select(".row:nth-of-type(2) .col-sm-3:nth-of-type(1)")
                   .text();
@@ -63,7 +56,6 @@ public class SnowBot
               tomStatsRaw =
                 row.select(".row:nth-of-type(2) .col-sm-3:nth-of-type(3)")
                   .text();
-
             }
           }
           catch (final Exception ex)
@@ -73,8 +65,6 @@ public class SnowBot
 
           double percent = prediction(tomStatsRaw);
 
-          // posts if % is greater than or equal to 50.
-          // will not post on weekends.
           if (percent >= 50 && !tomDateRaw.contains("Sat")
             && !tomDateRaw.contains("Sun"))
           {
@@ -88,39 +78,27 @@ public class SnowBot
                     + tomDateRaw.substring(tomDateRaw.indexOf(" ") + 1))
                   + ", there is a " + percent + "% chance of cancellation\n"
                   + likelyResult(percent));
-
             }
             catch (TwitterException e)
             {
               e.printStackTrace();
             }
           }
-
           try
           {
-
             Thread.sleep(timeInterval);
-
           }
           catch (InterruptedException e)
           {
-
             e.printStackTrace();
-
           }
-
         }
-
       }
-
     };
-
     Thread thread = new Thread(runnable);
-
     thread.start();
-
   }
-
+  
   public static String likelyResult(double percent)
   {
     if (percent > 50 && percent <= 75)
